@@ -1,0 +1,74 @@
+{
+  "last_prediction": {
+    "timestamp": "2025-09-07 10:28:57",
+    "predicted_price": 167.3297006800001,
+    "base_prediction": 167.1297006800001,
+    "sentiment_adjustment": 0.2,
+    "market_data": {
+      "SPX": {
+        "price": 6482.16015625,
+        "timestamp": "2025-09-07 10:28:55",
+        "change": -46.919921875
+      },
+      "GLD": {
+        "price": 330.9100036621094,
+        "timestamp": "2025-09-07 10:28:56",
+        "change": 1.3800048828125
+      },
+      "USO": {
+        "price": 72.62000274658203,
+        "timestamp": "2025-09-07 10:28:56",
+        "change": -0.399993896484375
+      },
+      "SLV": {
+        "price": 37.20500183105469,
+        "timestamp": "2025-09-07 10:28:57",
+        "change": -0.20499801635742188
+      },
+      "EUR/USD": {
+        "price": 1.172333002090454,
+        "timestamp": "2025-09-07 10:28:57",
+        "change": 0.006967663764953613
+      }
+    },
+    "news_sentiment": 0.1
+  },
+  "prediction_history": [
+    {
+      "timestamp": "2025-09-07 10:28:57",
+      "predicted_price": 167.3297006800001,
+      "base_prediction": 167.1297006800001,
+      "sentiment_adjustment": 0.2,
+      "market_data": {
+        "SPX": {
+          "price": 6482.16015625,
+          "timestamp": "2025-09-07 10:28:55",
+          "change": -46.919921875
+        },
+        "GLD": {
+          "price": 330.9100036621094,
+          "timestamp": "2025-09-07 10:28:56",
+          "change": 1.3800048828125
+        },
+        "USO": {
+          "price": 72.62000274658203,
+          "timestamp": "2025-09-07 10:28:56",
+          "change": -0.399993896484375
+        },
+        "SLV": {
+          "price": 37.20500183105469,
+          "timestamp": "2025-09-07 10:28:57",
+          "change": -0.20499801635742188
+        },
+        "EUR/USD": {
+          "price": 1.172333002090454,
+          "timestamp": "2025-09-07 10:28:57",
+          "change": 0.006967663764953613
+        }
+      },
+      "news_sentiment": 0.1
+    }
+  ],
+  "alerts": [],
+  "timestamp": "2025-09-07 10:28:57"
+}
