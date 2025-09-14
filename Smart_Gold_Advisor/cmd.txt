@@ -1,0 +1,1 @@
+$env:METALPRICE_API_KEY="5f563377eecd6a549c8958b3db4b2e2a"; .\.venv\Scripts\python app.py

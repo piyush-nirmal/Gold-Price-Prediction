@@ -1,0 +1,20 @@
+cd D:\Smart_Gold_Advisor
+.\.venv\Scripts\Activate.ps1
+$env:METALPRICE_API_KEY="d15eec2f29f1c2e153f4980f14e93d96"
+$env:RETAIL_PREMIUM_PCT="0.12"
+python app.py
+
+✅ What You'll See
+Real-time Gold Prices (INR per 10 grams)
+Live Sentiment Analysis from current gold news
+Price Predictions for next day and week
+BUY/SELL/HOLD Recommendations based on:
+BUY: Positive sentiment + Rising prices
+SELL: Negative sentiment + Falling prices
+HOLD: Conflicting signals
+
+Troubleshooting
+If you get import errors, make sure you're in the virtual environment
+If prices seem wrong, check your internet connection
+If the app doesn't start, try running pip install -r requirements.txt first
+Your Smart Gold Advisor is now ready with real-time sentiment analysis! 🚀

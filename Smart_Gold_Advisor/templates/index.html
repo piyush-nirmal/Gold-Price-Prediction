@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Gold Investment Advisor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f8d7da;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .price-card {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .price-card h3 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .price-change {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .positive { color: #28a745; }
+        .negative { color: #dc3545; }
+        .neutral { color: #6c757d; }
+        
+        .recommendation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .recommendation-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .recommendation-buy {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .recommendation-sell {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .recommendation-hold {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+        
+        .prediction-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .prediction-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .upload-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        
+        .reasoning-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .reasoning-list li {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .price-display {
+            text-align: center;
+        }
+        
+        .price-inr {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            display: block;
+        }
+        
+        .price-usd {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .price-detail {
+            margin: 5px 0;
+        }
+        
+        .price-detail .price-inr {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .price-detail .price-usd {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .exchange-rate {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="header">
+                <h1><i class="fas fa-chart-line"></i> Smart Gold Investment Advisor</h1>
+                <p>AI-Powered Gold Price Prediction & Investment Recommendations</p>
+            </div>
+            
+            <!-- Current Price Card -->
+            <div class="price-card">
+                <h3><i class="fas fa-coins"></i> Current Gold Prices (Per 10 Grams)</h3>
+                <div class="current-price" id="currentPrice">Loading...</div>
+                <div class="price-change" id="priceChange">-</div>
+                <div class="exchange-rate" id="exchangeRate">-</div>
+                <small class="text-muted" id="lastUpdated">Last updated: -</small>
+            </div>
+            
+            
+            <!-- Recommendation Card -->
+            <div class="recommendation-card">
+                <h3><i class="fas fa-lightbulb"></i> Investment Recommendation</h3>
+                <div id="recommendationContent">
+                    <div class="loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Analyzing market data...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Predictions Card -->
+            <div class="prediction-card">
+                <h3><i class="fas fa-crystal-ball"></i> Price Predictions (Per 10 Grams)</h3>
+                <div id="predictionsContent">
+                    <div class="loading">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Generating predictions...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <h4 class="chart-title"><i class="fas fa-chart-area"></i> Gold Price Trend (Per 10 Grams)</h4>
+                        <div id="priceChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <h4 class="chart-title"><i class="fas fa-heart"></i> Market Sentiment</h4>
+                        <div id="sentimentChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let currentData = null;
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCurrentPrice();
+            loadPredictions();
+            loadCharts();
+            
+            // Set up auto-refresh every 5 minutes
+            setInterval(loadCurrentPrice, 300000);
+            setInterval(loadPredictions, 300000);
+        });
+        
+        // Load current gold price
+        async function loadCurrentPrice() {
+            try {
+                const response = await fetch('/api/current_price');
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // Convert to per 10 grams (1 troy oz = 31.1035 grams)
+                    // Use spot price from API for consistency with prediction
+                    const price_10gm = data.spot_price_10gm || (data.price_inr * (10 / 31.1035));
+                    
+                    document.getElementById('currentPrice').innerHTML = `
+                        <div class="price-display">
+                            <div class="price-inr">₹${price_10gm.toLocaleString('en-IN', {maximumFractionDigits: 0})}</div>
+                            <div class="price-usd">Per 10 Grams ($${data.price_usd.toFixed(2)}/oz)</div>
+                        </div>
+                    `;
+                    document.getElementById('exchangeRate').textContent = `Exchange Rate: 1 USD = ₹${data.exchange_rate.toFixed(2)}`;
+                    document.getElementById('lastUpdated').textContent = `Last updated: ${new Date(data.timestamp).toLocaleString()}`;
+                }
+            } catch (error) {
+                console.error('Error loading current price:', error);
+                document.getElementById('currentPrice').innerHTML = `
+                    <div class="price-display">
+                        <div class="price-inr">₹1,49,400</div>
+                        <div class="price-usd">$1,800.00</div>
+                    </div>
+                `;
+            }
+        }
+        
+        
+        // Load predictions and recommendations
+        async function loadPredictions() {
+            try {
+                const response = await fetch('/api/prediction');
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    currentData = data;
+                    displayRecommendation(data.recommendation);
+                    displayPredictions(data);
+                } else {
+                    showError('Error loading predictions: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error loading predictions:', error);
+                showError('Error loading predictions');
+            }
+        }
+        
+        // Display recommendation
+        function displayRecommendation(recommendation) {
+            const content = document.getElementById('recommendationContent');
+            const badgeClass = `recommendation-${recommendation.recommendation.toLowerCase()}`;
+            
+            content.innerHTML = `
+                <div class="recommendation-badge ${badgeClass}">
+                    ${recommendation.recommendation}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Confidence: ${(recommendation.confidence * 100).toFixed(1)}%</h5>
+                        <p><strong>Current Price (per 10 grams):</strong> 
+                            <div class="price-detail">
+                                <span class="price-inr">₹${recommendation.current_price_10gm.toLocaleString('en-IN', {maximumFractionDigits: 0})}</span>
+                                <span class="price-usd">($${recommendation.current_price_usd.toFixed(2)}/oz)</span>
+                            </div>
+                        </p>
+                        <p><strong>Predicted Price (per 10 grams):</strong> 
+                            <div class="price-detail">
+                                <span class="price-inr">₹${recommendation.predicted_price_10gm.toLocaleString('en-IN', {maximumFractionDigits: 0})}</span>
+                                <span class="price-usd">($${recommendation.predicted_price_usd.toFixed(2)}/oz)</span>
+                            </div>
+                        </p>
+                        <p><strong>Expected Change:</strong> 
+                            <span class="${recommendation.price_change_pct >= 0 ? 'positive' : 'negative'}">
+                                ${recommendation.price_change_pct >= 0 ? '+' : ''}${recommendation.price_change_pct.toFixed(2)}%
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Reasoning:</h5>
+                        <ul class="reasoning-list">
+                            ${recommendation.reasoning.map(reason => `<li>${reason}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Display predictions
+        function displayPredictions(data) {
+            const content = document.getElementById('predictionsContent');
+            
+            content.innerHTML = `
+                <div class="prediction-item">
+                    <h5><i class="fas fa-calendar-day"></i> Next Day Prediction (per 10 grams)</h5>
+                    <div class="price-detail">
+                        <div class="price-inr">₹${data.next_day_price_10gm.toLocaleString('en-IN', {maximumFractionDigits: 0})}</div>
+                        <div class="price-usd">($${data.next_day_price_usd.toFixed(2)}/oz)</div>
+                    </div>
+                </div>
+                <div class="prediction-item">
+                    <h5><i class="fas fa-calendar-week"></i> Next Week Predictions (per 10 grams)</h5>
+                    <div class="row">
+                        ${data.next_week_prices_10gm.map((price_10gm, index) => `
+                            <div class="col-6 col-md-4 mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <small>Day ${index + 1}:</small>
+                                    <div class="text-end">
+                                        <small class="price-inr">₹${price_10gm.toLocaleString('en-IN', {maximumFractionDigits: 0})}</small>
+                                        <br><small class="price-usd">($${data.next_week_prices_usd[index].toFixed(2)}/oz)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Load charts
+        async function loadCharts() {
+            try {
+                const response = await fetch('/api/chart_data');
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const priceChartData = JSON.parse(data.price_chart);
+                    const sentimentChartData = JSON.parse(data.sentiment_chart);
+                    
+                    Plotly.newPlot('priceChart', priceChartData.data, priceChartData.layout, {responsive: true});
+                    Plotly.newPlot('sentimentChart', sentimentChartData.data, sentimentChartData.layout, {responsive: true});
+                }
+            } catch (error) {
+                console.error('Error loading charts:', error);
+            }
+        }
+        
+        
+        
+        // Show error message
+        function showError(message) {
+            const content = document.getElementById('recommendationContent');
+            content.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

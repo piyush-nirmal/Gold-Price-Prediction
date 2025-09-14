@@ -1,0 +1,189 @@
+================================================================================
+                    SMART GOLD ADVISOR - SETUP & RUN GUIDE
+================================================================================
+
+📋 OVERVIEW:
+This guide will help you run the Smart Gold Advisor application every time.
+The app provides real-time gold prices, AI-powered predictions, and investment 
+recommendations using live API data.
+
+================================================================================
+🚀 QUICK START (All Steps in One Command)
+================================================================================
+
+Copy and paste this single command in PowerShell:
+
+cd D:\Smart_Gold_Advisor; .\.venv\Scripts\Activate.ps1; $env:METALPRICE_API_KEY="d15eec2f29f1c2e153f4980f14e93d96"; $env:RETAIL_PREMIUM_PCT="0.12"; .\.venv\Scripts\python app.py
+
+================================================================================
+📝 DETAILED STEP-BY-STEP GUIDE
+================================================================================
+
+STEP 1: Navigate to Project Directory
+-------------------------------------
+Open PowerShell and run:
+cd D:\Smart_Gold_Advisor
+
+STEP 2: Activate Virtual Environment
+------------------------------------
+.\.venv\Scripts\Activate.ps1
+
+STEP 3: Set Environment Variables
+---------------------------------
+$env:METALPRICE_API_KEY="d15eec2f29f1c2e153f4980f14e93d96"
+$env:RETAIL_PREMIUM_PCT="0.12"
+
+STEP 4: Run the Application
+---------------------------
+.\.venv\Scripts\python app.py
+
+STEP 5: Access the Dashboard
+----------------------------
+Open your browser and go to: http://127.0.0.1:5000
+
+================================================================================
+🔧 WHAT EACH STEP DOES
+================================================================================
+
+1. Navigate: Goes to your project folder
+2. Activate: Enables the Python virtual environment with all dependencies
+3. Set Variables: 
+   - METALPRICE_API_KEY: Your API key for gold prices (when available)
+   - RETAIL_PREMIUM_PCT: 12% premium for Indian market prices
+4. Run: Starts the Flask server
+5. Access: Opens the dashboard in your browser
+
+================================================================================
+📊 EXPECTED OUTPUT
+================================================================================
+
+✅ Server Status: Running on http://127.0.0.1:5000
+✅ Current Gold Price: ~₹1,03,445 per 10g (live from Coinbase API)
+✅ Predicted Price: ~₹1,00,173 per 10g (ML model prediction)
+✅ Recommendation: HOLD/BUY/SELL based on AI analysis
+✅ Exchange Rate: Live USD to INR conversion
+✅ Last Updated: Real-time timestamp
+
+================================================================================
+🌐 API SOURCES USED
+================================================================================
+
+Primary Gold Price API: Coinbase API
+- URL: https://api.coinbase.com/v2/exchange-rates?currency=XAU
+- Provides: Real-time gold price in USD per troy ounce
+
+Fallback Gold Price API: Alpha Vantage
+- URL: https://www.alphavantage.co/query?function=COMMODITY_EXCHANGE_RATE
+- Provides: Alternative gold price if primary fails
+
+Exchange Rate API: exchangerate-api.com
+- URL: https://api.exchangerate-api.com/v4/latest/USD
+- Provides: USD to INR conversion rate
+
+================================================================================
+⚠️ TROUBLESHOOTING
+================================================================================
+
+PROBLEM: API key hits monthly limit
+SOLUTION: App automatically uses free fallback APIs (Coinbase, Alpha Vantage)
+
+PROBLEM: Port 5000 is busy
+SOLUTION: 
+1. Kill existing processes: Get-Process | Where-Object {$_.ProcessName -eq "python"} | Stop-Process
+2. Or change port in app.py
+
+PROBLEM: Dependencies missing
+SOLUTION: Run: pip install -r requirements.txt
+
+PROBLEM: Virtual environment not found
+SOLUTION: Create new one: python -m venv .venv
+
+PROBLEM: Permission denied
+SOLUTION: Run PowerShell as Administrator
+
+================================================================================
+🛑 HOW TO STOP THE SERVER
+================================================================================
+
+Press Ctrl+C in the terminal where the server is running
+
+================================================================================
+📁 PROJECT STRUCTURE
+================================================================================
+
+D:\Smart_Gold_Advisor\
+├── app.py                 (Main Flask application)
+├── requirements.txt       (Python dependencies)
+├── README.md             (Project documentation)
+├── SETUP_GUIDE.txt       (This setup guide)
+├── .venv\                (Virtual environment)
+├── data\                 (Data files)
+│   ├── FINAL_USO.csv
+│   ├── gold sentiment.csv
+│   └── processed_gold_data.csv
+├── models\               (Trained ML models)
+│   ├── gold_predictor_model.pkl
+│   └── scalers.pkl
+├── src\                  (Source code modules)
+│   ├── data_preprocessing.py
+│   ├── gold_predictor.py
+│   ├── recommendation_engine.py
+│   └── train_models.py
+├── templates\            (HTML templates)
+│   └── index.html
+└── static\               (CSS, JS files)
+    ├── app.js
+    └── style.css
+
+================================================================================
+🔑 ENVIRONMENT VARIABLES EXPLAINED
+================================================================================
+
+METALPRICE_API_KEY: Your API key for MetalpriceAPI.com
+- Used for premium gold price data
+- Falls back to free APIs when limit reached
+
+RETAIL_PREMIUM_PCT: Indian market premium percentage
+- Default: 0.12 (12%)
+- Adjusts prices to match Indian retail rates
+
+================================================================================
+📈 FEATURES INCLUDED
+================================================================================
+
+✅ Real-time gold price fetching from multiple APIs
+✅ AI-powered price predictions using ML models
+✅ Investment recommendations (BUY/HOLD/SELL)
+✅ Live USD to INR exchange rates
+✅ Consistent pricing across all sections
+✅ Automatic API fallback system
+✅ Responsive web dashboard
+✅ Auto-refresh functionality
+
+================================================================================
+🎯 SUCCESS INDICATORS
+================================================================================
+
+When everything is working correctly, you should see:
+- Server running message in terminal
+- Dashboard loads without errors
+- Current price shows live data (not fallback values)
+- Prediction and current price are consistent
+- Recommendation updates based on live data
+- Last updated timestamp changes every few seconds
+
+================================================================================
+📞 SUPPORT
+================================================================================
+
+If you encounter any issues:
+1. Check the terminal for error messages
+2. Verify all environment variables are set
+3. Ensure virtual environment is activated
+4. Check internet connection for API calls
+5. Verify port 5000 is available
+
+================================================================================
+Last Updated: September 10, 2025
+Version: 1.0
+================================================================================
